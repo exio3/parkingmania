@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Parking Game</title>
+<style>
+body {
+  margin: 0;
+  background: #0f0f0f;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+canvas {
+  display: block;
+  margin: auto;
+}
+button {
+  font-size: 20px;
+  padding: 12px 26px;
+  margin: 10px;
+  cursor: pointer;
+}
+.ui-panel {
+  position: absolute;
+  color: white;
+  text-align: center;
+}
+.hidden { display: none; }
+</style>
+</head>
 
+<body>
+
+<div id="menu" class="ui-panel" style="top:50%;left:50%;transform:translate(-50%,-50%)">
+  <h1 style="font-size:52px">🚗 PARKING GAME</h1>
+  <button onclick="startLevel(0)">Play</button><br>
+  <button onclick="openLevels()">Levels</button>
+</div>
+
+<div id="levels" class="ui-panel hidden" style="top:50%;left:50%;transform:translate(-50%,-50%)">
+  <h2>Select Level</h2>
+  <div id="levelButtons"></div>
+  <button onclick="backToMenu()">Back</button>
+</div>
+
+<canvas id="game" width="1280" height="720"></canvas>
+
+<script>
+/* ================= SETUP ================= */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let keys = {};
+document.onkeydown = e => keys[e.key] = true;
+document.onkeyup = e => keys[e.key] = false;
+
+let state = "menu";
+let levelIndex = 0;
+let hits = 0;
+
+/* ================= LEVEL DATA ================= */
+const levels = Array.from({length:20}, (_,i)=>({
+  start:{x:120,y:360},
+  park:{x:1000,y:360},
+  walls: Array.from({length:i+1},(_,n)=>({
+    x:400+80*n,
+    y:200+(n%2)*200,
+    w:30,
+    h:180
+  }))
+}));
+
+/* ================= CAR ================= */
+let car = {};
+
+function resetCar(){
+  const l = levels[levelIndex];
+  car = {x:l.start.x,y:l.start.y,a:0,v:0};
+  hits = 0;
+}
+
+/* ================= UI ================= */
+function startLevel(i){
+  levelIndex = i;
+  resetCar();
+  state = "play";
+  hideUI();
+}
+
+function openLevels(){
+  hideUI();
+  document.getElementById("levels").classList.remove("hidden");
+}
+
+function backToMenu(){
+  hideUI();
+  document.getElementById("menu").classList.remove("hidden");
+  state="menu";
+}
+
+function hideUI(){
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("levels").classList.add("hidden");
+}
+
+/* ================= LEVEL BUTTONS ================= */
+const lb = document.getElementById("levelButtons");
+levels.forEach((_,i)=>{
+  const b=document.createElement("button");
+  b.textContent="Level "+(i+1);
+  b.onclick=()=>startLevel(i);
+  lb.appendChild(b);
+});
+
+/* ================= GAME LOOP ================= */
+function update(){
+  if(state!=="play") return;
+
+  let accel=0,turn=0;
+  if(keys.w||keys.ArrowUp) accel=0.25;
+  if(keys.s||keys.ArrowDown) accel=-0.2;
+  if(keys.a||keys.ArrowLeft) turn=-0.05;
+  if(keys.d||keys.ArrowRight) turn=0.05;
+
+  car.v += accel;
+  car.v *= 0.96;
+  car.a += turn;
+
+  car.x += Math.cos(car.a)*car.v;
+  car.y += Math.sin(car.a)*car.v;
+
+  // collisions
+  for(const w of levels[levelIndex].walls){
+    if(car.x<w.x+w.w && car.x+40>w.x &&
+       car.y<w.y+w.h && car.y+20>w.y){
+      hits++;
+      car.v*=-0.4;
+      if(hits>=3){
+        backToMenu();
+      }
+    }
+  }
+
+  // parking
+  const p = levels[levelIndex].park;
+  if(car.x>p.x && car.y>p.y-20 && car.y<p.y+20 && Math.abs(car.v)<0.3){
+    startLevel(Math.min(levelIndex+1,19));
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(state!=="play") return;
+
+  // asphalt
+  ctx.fillStyle="#2a2a2a";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // parking
+  ctx.strokeStyle="lime";
+  ctx.lineWidth=4;
+  ctx.strokeRect(levels[levelIndex].park.x,levels[levelIndex].park.y-25,60,50);
+
+  // walls
+  ctx.fillStyle="#555";
+  levels[levelIndex].walls.forEach(w=>ctx.fillRect(w.x,w.y,w.w,w.h));
+
+  // car
+  ctx.save();
+  ctx.translate(car.x+20,car.y+10);
+  ctx.rotate(car.a);
+  ctx.fillStyle="red";
+  ctx.shadowColor="black";
+  ctx.shadowBlur=10;
+  ctx.fillRect(-20,-10,40,20);
+  ctx.restore();
+
+  // stars
+  ctx.fillStyle="white";
+  ctx.font="22px Arial";
+  ctx.fillText("Hits: "+hits,20,30);
+
+  // tutorial
+  if(levelIndex===0){
+    ctx.fillStyle="rgba(0,0,0,0.6)";
+    ctx.fillRect(400,50,480,120);
+    ctx.fillStyle="white";
+    ctx.fillText("Use W A S D to drive",430,90);
+    ctx.fillText("Park in the green box",430,120);
+    ctx.fillText("3 hits = fail",430,150);
+  }
+}
+
+function loop(){
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
