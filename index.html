@@ -1,244 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>City Parking</title>
-<style>
-body {
-  margin: 0;
-  background: #0d0d0d;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-canvas {
-  display: block;
-}
-button {
-  font-size: 22px;
-  padding: 14px 26px;
-  margin: 8px;
-  cursor: pointer;
-}
-.ui {
-  position: absolute;
-  color: white;
-  text-align: center;
-}
-.hidden { display: none; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Modern UI</title>
+    <!-- Tailwind CSS for sleek utility styling -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Google Fonts for gorgeous typography -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for clean iconography -->
+    <script src="https://unpkg.com"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030014;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-effect {
+            position: absolute;
+            filter: blur(150px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body>
+<body class="text-slate-200 min-h-screen overflow-x-hidden relative selection:bg-indigo-500/30">
 
-<!-- LEVEL SELECT ONLY -->
-<div id="menu" class="ui" style="top:50%;left:50%;transform:translate(-50%,-50%)">
-  <h1 style="font-size:56px;margin-bottom:20px">CITY PARKING</h1>
-  <div id="levelButtons"></div>
-</div>
+    <!-- Ambient Background Glows -->
+    <div class="glow-effect w-[500px] h-[500px] bg-indigo-600 top-[-10%] left-[-10%] rounded-full"></div>
+    <div class="glow-effect w-[600px] h-[600px] bg-purple-600 bottom-[-10%] right-[-10%] rounded-full"></div>
+    <div class="glow-effect w-[400px] h-[400px] bg-emerald-500 top-[40%] left-[40%] rounded-full"></div>
 
-<canvas id="game" width="1920" height="1080"></canvas>
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/5 bg-[#030014]/60 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 font-bold text-xl tracking-tight text-white group">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
+                    <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                </div>
+                <span>Aether<span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">UI</span></span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#" class="text-white transition-colors duration-200">Features</a>
+                <a href="#" class="hover:text-white transition-colors duration-200">Showcase</a>
+                <a href="#" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <a href="#" class="hover:text-white transition-colors duration-200">Documentation</a>
+            </nav>
 
-<script>
-/* ================= SETUP ================= */
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+            <div class="flex items-center gap-4">
+                <button class="hidden sm:block text-sm font-medium text-slate-300 hover:text-white transition-colors duration-200 px-4 py-2">
+                    Sign In
+                </button>
+                <button class="text-sm font-medium bg-white text-black hover:bg-slate-100 transition-all duration-300 px-5 py-2.5 rounded-full font-semibold shadow-xl shadow-white/5 active:scale-95">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </header>
 
-let keys = {};
-document.addEventListener("keydown", e => keys[e.key] = true);
-document.addEventListener("keyup", e => keys[e.key] = false);
+    <!-- Main Content Container -->
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32">
+        
+        <!-- Hero Section -->
+        <section class="text-center max-w-4xl mx-auto mb-24">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel text-xs font-medium tracking-wide text-indigo-300 mb-6 animate-fade-in border border-indigo-500/20 shadow-inner">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                Introducing Next-Gen Interactivity
+            </div>
+            
+            <h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-8">
+                Crafting interfaces that feel like <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">pure magic</span>
+            </h1>
+            
+            <p class="text-lg sm:text-xl text-slate-400 font-normal max-w-2xl mx-auto mb-10 leading-relaxed">
+                A thoughtfully designed template system built to breathe life into your web experiences. Minimal design, maximal impact.
+            </p>
 
-let state = "menu";
-let levelIndex = 0;
-let hits = 0;
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium px-8 py-4 rounded-full shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:-translate-y-0.5 group">
+                    Explore Platform
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 glass-panel hover:bg-white/5 text-slate-300 hover:text-white font-medium px-8 py-4 rounded-full transition-all duration-300">
+                    View Templates
+                </a>
+            </div>
+        </section>
 
-/* ================= CITY LEVELS ================= */
-const levels = [
-  {
-    start:{x:200,y:540},
-    park:{x:1600,y:520},
-    buildings:[
-      {x:0,y:0,w:400,h:350},{x:0,y:730,w:400,h:350},
-      {x:600,y:0,w:300,h:250},{x:600,y:830,w:300,h:250}
-    ],
-    walls:[
-      {x:500,y:400,w:40,h:280},
-      {x:900,y:400,w:40,h:280}
-    ]
-  }
-];
+        <!-- Feature Grid Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Card 1 -->
+            <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-white/15 transition-all duration-300">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="h-12 w-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400 group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Flawless Aesthetic</h3>
+                <p class="text-slate-400 leading-relaxed text-sm">
+                    Meticulously balanced micro-interactions, layout constraints, and vibrant neon accents tailored for professional design layers.
+                </p>
+            </div>
 
-// generate remaining levels with variety
-while(levels.length < 20){
-  const i = levels.length;
-  levels.push({
-    start:{x:150,y:200 + (i%4)*200},
-    park:{x:1600,y:300 + (i%3)*250},
-    buildings:[
-      {x:0,y:0,w:450,h:300},
-      {x:0,y:780,w:450,h:300},
-      {x:700,y:0,w:350,h:260},
-      {x:700,y:820,w:350,h:260},
-      {x:1200,y:0,w:400,h:320},
-      {x:1200,y:760,w:400,h:320}
-    ],
-    walls:[
-      {x:600,y:300,w:40,h:480},
-      {x:1000,y:200,w:40,h:520},
-      {x:1400,y:350,w:40,h:380}
-    ]
-  });
-}
+            <!-- Card 2 -->
+            <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-white/15 transition-all duration-300">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="h-12 w-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Blazing Performance</h3>
+                <p class="text-slate-400 leading-relaxed text-sm">
+                    Zero bloatware infrastructure ensures pure, unadulterated rendering loops running beautifully at 120 FPS.
+                </p>
+            </div>
 
-/* ================= CAR ================= */
-let car = {};
+            <!-- Card 3 -->
+            <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-white/15 transition-all duration-300">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="h-12 w-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-6 text-pink-400 group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="shield" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Rock Solid Core</h3>
+                <p class="text-slate-400 leading-relaxed text-sm">
+                    Engineered with future-proof standards, strict semantic structures, and robust fluid responsive layouts.
+                </p>
+            </div>
 
-function resetCar(){
-  const l = levels[levelIndex];
-  car = { x:l.start.x, y:l.start.y, a:0, v:0 };
-  hits = 0;
-}
+        </section>
 
-/* ================= UI ================= */
-const levelButtons = document.getElementById("levelButtons");
-levels.forEach((_,i)=>{
-  const b = document.createElement("button");
-  b.textContent = "Level " + (i+1);
-  b.onclick = () => startLevel(i);
-  levelButtons.appendChild(b);
-});
+    </main>
 
-function startLevel(i){
-  levelIndex = i;
-  resetCar();
-  state = "play";
-  document.getElementById("menu").classList.add("hidden");
-}
-
-function backToMenu(){
-  state = "menu";
-  document.getElementById("menu").classList.remove("hidden");
-}
-
-/* ================= GAME LOGIC ================= */
-function update(){
-  if(state !== "play") return;
-
-  let accel = 0, turn = 0;
-  if(keys.w||keys.ArrowUp) accel = 0.28;
-  if(keys.s||keys.ArrowDown) accel = -0.22;
-  if(keys.a||keys.ArrowLeft) turn = -0.045;
-  if(keys.d||keys.ArrowRight) turn = 0.045;
-
-  car.v += accel;
-  car.v *= 0.97;
-  car.a += turn;
-
-  car.x += Math.cos(car.a) * car.v;
-  car.y += Math.sin(car.a) * car.v;
-
-  const lvl = levels[levelIndex];
-
-  // collisions
-  const obstacles = [...lvl.buildings, ...lvl.walls];
-  for(const o of obstacles){
-    if(car.x < o.x + o.w && car.x + 60 > o.x &&
-       car.y < o.y + o.h && car.y + 30 > o.y){
-      hits++;
-      car.v *= -0.4;
-      if(hits >= 3){
-        backToMenu();
-      }
-    }
-  }
-
-  // parking
-  const p = lvl.park;
-  if(car.x > p.x && car.x < p.x+80 &&
-     car.y > p.y && car.y < p.y+50 &&
-     Math.abs(car.v) < 0.35){
-    startLevel(Math.min(levelIndex+1, 19));
-  }
-}
-
-/* ================= DRAW ================= */
-function drawCar(){
-  ctx.save();
-  ctx.translate(car.x+30, car.y+15);
-  ctx.rotate(car.a);
-
-  // body
-  ctx.fillStyle="#c00";
-  ctx.fillRect(-30,-15,60,30);
-
-  // roof
-  ctx.fillStyle="#900";
-  ctx.fillRect(-18,-10,36,20);
-
-  // windshield
-  ctx.fillStyle="#333";
-  ctx.fillRect(6,-8,16,16);
-
-  // tires
-  ctx.fillStyle="#111";
-  ctx.fillRect(-28,-18,10,6);
-  ctx.fillRect(-28,12,10,6);
-  ctx.fillRect(18,-18,10,6);
-  ctx.fillRect(18,12,10,6);
-
-  ctx.restore();
-}
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  if(state !== "play") return;
-
-  // roads
-  ctx.fillStyle="#2a2a2a";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // sidewalks
-  ctx.fillStyle="#444";
-  levels[levelIndex].buildings.forEach(b=>{
-    ctx.fillRect(b.x,b.y,b.w,b.h);
-  });
-
-  // obstacles
-  ctx.fillStyle="#666";
-  levels[levelIndex].walls.forEach(w=>{
-    ctx.fillRect(w.x,w.y,w.w,w.h);
-  });
-
-  // parking spot
-  const p = levels[levelIndex].park;
-  ctx.strokeStyle="lime";
-  ctx.lineWidth=4;
-  ctx.strokeRect(p.x,p.y,80,50);
-
-  drawCar();
-
-  // HUD
-  ctx.fillStyle="white";
-  ctx.font="26px Arial";
-  ctx.fillText("Hits: " + hits + " / 3", 30, 50);
-
-  // tutorial
-  if(levelIndex === 0){
-    ctx.fillStyle="rgba(0,0,0,0.6)";
-    ctx.fillRect(600,60,720,140);
-    ctx.fillStyle="white";
-    ctx.fillText("W / A / S / D to drive",640,110);
-    ctx.fillText("Park inside the green box",640,150);
-    ctx.fillText("3 hits = fail",640,190);
-  }
-}
-
-/* ================= LOOP ================= */
-function loop(){
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-loop();
-</script>
+    <!-- Core Icon Initializer -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
