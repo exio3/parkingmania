@@ -3,104 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Into the Aether</title>
-    <script src="https://tailwindcss.com"></script>
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com"></script>
+    <title>BSOD</title>
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #030014;
+        /* Exact Windows 10/11 BSOD color specification */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0078d7;
+            color: #ffffff;
+            font-family: "Segoe UI", -apple-system, sans-serif;
+            overflow: hidden;
+            cursor: none; /* Hides cursor for realism */
+            user-select: none; /* Prevents text selection accidental highlights */
+            -webkit-user-select: none;
         }
-        /* Custom smooth entrance scales */
-        .reveal-scale {
-            animation: revealScale 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+        /* Centered structural canvas layout */
+        .bsod-container {
+            padding: 10% 8% 5% 12%;
+            max-width: 1200px;
+            box-sizing: border-box;
         }
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(40px);
-            animation: revealUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+        /* Large icon emoticons */
+        .emoticon {
+            font-size: 140px;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 30px;
+            letter-spacing: -5px;
         }
-        .glow-orb {
-            filter: blur(140px);
-            opacity: 0;
-            animation: glowFade 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+
+        /* Primary warning text structure */
+        .message {
+            font-size: 33px;
+            font-weight: 300;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            max-width: 950px;
+            letter-spacing: -0.5px;
         }
-        @keyframes revealScale {
-            0% { transform: scale(0.92); opacity: 0; filter: blur(10px); }
-            100% { transform: scale(1); opacity: 1; filter: blur(0); }
+
+        /* Footer diagnostics grid metadata */
+        .diagnostic-area {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 50px;
+            gap: 35px;
         }
-        @keyframes revealUp {
-            100% { transform: translateY(0); opacity: 1; }
+
+        .qr-code {
+            width: 135px;
+            height: 135px;
+            background-color: #ffffff;
+            padding: 6px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        @keyframes glowFade {
-            100% { opacity: 0.45; }
+
+        /* Procedural CSS layout block mimicking actual Microsoft system link QR targets */
+        .qr-row {
+            display: flex;
+            justify-content: space-between;
+            height: 15px;
+        }
+        .qr-pixel {
+            background-color: #0078d7;
+            width: 15px;
+            height: 15px;
+        }
+        .qr-pixel.black {
+            background-color: #000000;
+        }
+
+        .details {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #ffffff;
+            max-width: 650px;
+        }
+
+        .info-link {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .metadata-labels {
+            font-size: 14px;
+            color: #daeaf6;
+            margin-top: 15px;
+            font-family: "Segoe UI Semibold", "Segoe UI", sans-serif;
+        }
+
+        .metadata-labels span {
+            color: #ffffff;
+            font-family: "Segoe UI", sans-serif;
         }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen flex flex-col justify-between overflow-hidden relative selection:bg-indigo-500/30">
+<body>
 
-    <!-- Instant Ambient Glow Backgrounds -->
-    <div class="glow-orb absolute w-[550px] h-[550px] bg-indigo-600 top-[-10%] left-[-5%] rounded-full"></div>
-    <div class="glow-orb absolute w-[650px] h-[650px] bg-purple-600 bottom-[-15%] right-[-5%] rounded-full" style="animation-delay: 0.5s;"></div>
+    <div class="bsod-container">
+        <!-- Iconic Sad Face Emoticon -->
+        <div class="emoticon">:(</div>
 
-    <!-- Minimal Header (Delayed subtle entry) -->
-    <header class="reveal-up relative z-10 w-full max-w-7xl mx-auto px-8 pt-8 flex items-center justify-between" style="animation-delay: 0.4s;">
-        <div class="flex items-center gap-2.5 font-semibold text-lg tracking-tight text-white">
-            <div class="h-8 w-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <i data-lucide="compass" class="w-4 h-4 text-white"></i>
+        <!-- System Narrative Message -->
+        <div class="message">
+            Your PC ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you.
+        </div>
+
+        <!-- Incremental Counter Block -->
+        <div class="message" style="font-weight: 400;">
+            <span id="progress-percent">0</span>% complete
+        </div>
+
+        <!-- Microsoft Informational Diagnostic Segment -->
+        <div class="diagnostic-area">
+            
+            <div class="qr-code">
+                <div class="qr-row"><div class="qr-pixel black"></div><div class="qr-pixel black"></div><div class="qr-pixel"></div><div class="qr-pixel black"></div><div class="qr-pixel black"></div></div>
+                <div class="qr-row"><div class="qr-pixel black"></div><div class="qr-pixel"></div><div class="qr-pixel black"></div><div class="qr-pixel"></div><div class="qr-pixel black"></div></div>
+                <div class="qr-row"><div class="qr-pixel"></div><div class="qr-pixel black"></div><div class="qr-pixel black"></div><div class="qr-pixel black"></div><div class="qr-pixel"></div></div>
+                <div class="qr-row"><div class="qr-pixel black"></div><div class="qr-pixel"></div><div class="qr-pixel black"></div><div class="qr-pixel black"></div><div class="qr-pixel black"></div></div>
+                <div class="qr-row"><div class="qr-pixel black"></div><div class="qr-pixel black"></div><div class="qr-pixel"></div><div class="qr-pixel"></div><div class="qr-pixel black"></div></div>
             </div>
-            <span>Aether<span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent font-light">Labs</span></span>
-        </div>
-        <div class="text-xs tracking-widest text-slate-500 font-mono">SYSTEM // ACTIVE</div>
-    </header>
 
-    <!-- Main Container (Triggers immediately on load) -->
-    <main class="reveal-scale relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center justify-center text-center flex-grow -mt-12">
-        
-        <!-- Animated Badge -->
-        <div class="reveal-up inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium tracking-wide text-indigo-300 mb-8 shadow-inner" style="animation-delay: 0.1s;">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Deployment Live
+            <!-- Stop Code Details -->
+            <div class="details">
+                <div class="info-link">For more information about this issue and possible fixes, visit https://windows.com</div>
+                
+                <div class="metadata-labels">
+                    If you call a support person, give them this info:<br>
+                    Stop code: <span>CRITICAL_PROCESS_DIED</span><br>
+                    What failed: <span>ntoskrnl.exe</span>
+                </div>
+            </div>
         </div>
-        
-        <!-- Main Title -->
-        <h1 class="reveal-up text-5xl sm:text-7xl font-extrabold text-white tracking-tight leading-[1.15] mb-8" style="animation-delay: 0.2s;">
-            Welcome to the <br>
-            <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Next Generation</span>
-        </h1>
-        
-        <!-- Sub-headline -->
-        <p class="reveal-up text-lg text-slate-400 font-normal max-w-xl mx-auto mb-10 leading-relaxed" style="animation-delay: 0.3s;">
-            No setup required. You clicked, and the interface materialized. Everything is fluid, ultra-responsive, and ready for your next move.
-        </p>
-
-        <!-- Dynamic Action Buttons -->
-        <div class="reveal-up flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto" style="animation-delay: 0.4s;">
-            <button class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium px-8 py-4 rounded-full shadow-lg shadow-indigo-500/20 active:scale-98 transition-all duration-300">
-                Launch Workspace
-            </button>
-            <button class="w-full sm:w-auto bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 hover:text-white font-medium px-8 py-4 rounded-full transition-all duration-300">
-                Read Documentation
-            </button>
-        </div>
-    </main>
-
-    <!-- Decorative Footer Grid -->
-    <footer class="reveal-up relative z-10 w-full max-w-7xl mx-auto px-8 pb-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 border-t border-white/5 pt-6 gap-4" style="animation-delay: 0.6s;">
-        <div>&copy; 2026 Aether Labs Inc. All rights reserved.</div>
-        <div class="flex gap-6">
-            <a href="#" class="hover:text-slate-300 transition-colors">Privacy</a>
-            <a href="#" class="hover:text-slate-300 transition-colors">Terms</a>
-            <a href="#" class="hover:text-slate-300 transition-colors">Status</a>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Init crisp vector iconography
-        lucide.createIcons();
+        // Automatic organic counting sequences
+        const percentElement = document.getElementById('progress-percent');
+        let currentPercent = 0;
+
+        function updateProgress() {
+            if (currentPercent < 100) {
+                // Generates semi-random realistic increments
+                let increment = Math.floor(Math.random() * 12) + 1;
+                currentPercent = Math.min(currentPercent + increment, 100);
+                percentElement.textContent = currentPercent;
+
+                // Sets random organic delay gaps like a real dump generation cycle
+                let nextDelay = Math.floor(Math.random() * 2500) + 800;
+                setTimeout(updateProgress, nextDelay);
+            }
+        }
+
+        // Trigger loop cycle on initialization
+        setTimeout(updateProgress, 1500);
+
+        // Standard hotkey block overrides to prevent instant simple accidental exits
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'F11' || e.key === 'Escape') {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
